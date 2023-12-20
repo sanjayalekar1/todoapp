@@ -1,0 +1,28 @@
+.nav-item{
+    text-decoration: none;
+    color:#fff;
+    margin:1.2em;
+    padding: 15px, 10px;
+    
+}
+.nav-item:hover{
+    
+    color:#ccc;
+        
+}
+
+.active {
+    color:#000;
+}
+.nav-header{
+    color: #fff;
+    text-decoration: none;
+}
+
+.container{
+
+    margin-top:5%;
+}
+.field-top-margin{
+    margin-top: 20px;
+}
