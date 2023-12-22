@@ -11,7 +11,8 @@ import {
   selectUser,
   selectLoading,
   setToken,
-  selectToken
+  selectToken,
+  setAuthenticated
 } from "../reducers/authSlice";
 import { useNavigate } from "react-router-dom";
 import {
@@ -82,10 +83,12 @@ const LoginForm = (props) => {
         const result = await response.json();
         dispatch(setUser(result.user));
         dispatch(setToken(result.token));
+        dispatch(setAuthenticated(true));
+        
+        localStorage.setItem('isAuthenticated',true);
+        localStorage.setItem('token',result.token);
+        localStorage.setItem('user',JSON.stringify(result.user));
         navigate("/dashboard");
-        // localStorage.setItem('isAuthenticated',isAuthenticated);
-        // localStorage.setItem('token',result.token);
-        // localStorage.setItem('user',result.user);
       } else {
         // localStorage.removeItem('isAuthenticated');
         // localStorage.removeItem('token');

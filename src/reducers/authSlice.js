@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  token:null,
-  user: null,
-  isAuthenticated: false,
+  token:localStorage.getItem('token'),
+  user: localStorage.getItem('user'),
+  isAuthenticated: localStorage.getItem('isAuthenticated'),
   loading: false,
   error: null,
 };
@@ -14,15 +14,12 @@ const authSlice = createSlice({
   reducers: {
     setToken:(state,action) =>{
       state.token = action.payload;
-      localStorage.setItem('token',action.payload);
     },
     setUser: (state, action) => {
       state.user = action.payload;
-      state.isAuthenticated = true;
       state.loading = false;
       state.error = null;
-      localStorage.setItem('isAuthenticated',state.isAuthenticated);
-      localStorage.setItem('user',JSON.stringify(action.payload));
+     
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -34,7 +31,8 @@ const authSlice = createSlice({
     },
     setAuthenticated: (state, action) => {
       state.loading = false; 
-      state.isAuthenticated = true;
+      state.isAuthenticated =true;
+      
     },
     logout: (state) => {
       state.user = null;
@@ -48,7 +46,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, setLoading, setError,logout ,setToken} = authSlice.actions;
+export const { setUser, setLoading, setError,logout ,setToken,setAuthenticated} = authSlice.actions;
 export const selectToken = (state) => state.auth.auth.token;
 export const selectUser = (state) => state.auth.auth.user;
 export const selectIsAuthenticated = (state) => state.auth.auth.isAuthenticated;

@@ -11,6 +11,7 @@ const MainNavigation = () => {
   const navigate = useNavigate();
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
+ 
 
   const logoutHandler = () =>{
     if(isAuthenticated) {
