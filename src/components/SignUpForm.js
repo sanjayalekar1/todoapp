@@ -27,8 +27,6 @@ const SignUpForm = (props) => {
 
   const [errors, setErrors] = useState(initialState);
 
-  //console.log(formData);
-
   const validateForm = () => {
     let errors = {};
     let isValid = true;

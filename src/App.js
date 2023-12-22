@@ -7,16 +7,14 @@ import RootLayout from "./pages/RootLayout";
 import Dashboard from "./pages/Dashboard";
 import ErrorPage from "./pages/Error";
 import { selectIsAuthenticated } from "./reducers/authSlice";
-import {useSelector} from 'react-redux';
+import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Board from "./pages/Board";
 
 function App() {
+  const PrivateRoute = ({ element }) => {
+    const isAuthenticated = useSelector(selectIsAuthenticated);
 
-  const PrivateRoute = ({ element}) => {
-    const isAuthenticated= useSelector(selectIsAuthenticated);
-    console.log(isAuthenticated);
-    
     return isAuthenticated ? element : <ProtectedRoute />;
   };
 
@@ -40,20 +38,16 @@ function App() {
         },
         {
           path: "dashboard",
-          element: <PrivateRoute element = {<Dashboard />} />,
+          element: <PrivateRoute element={<Dashboard />} />,
         },
         {
           path: "board",
-          element: <PrivateRoute element = {<Board />} />,
+          element: <PrivateRoute element={<Board />} />,
         },
-     
       ],
     },
-    
   ]);
-  return (
-      <RouterProvider router={router}></RouterProvider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

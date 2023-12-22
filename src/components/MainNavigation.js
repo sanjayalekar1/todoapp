@@ -26,16 +26,20 @@ const MainNavigation = () => {
           <Container>
             <Toolbar>
               <h1>
-                <Link className="nav-header" to="/">
+                <Link className="nav-header" to="/dashboard">
                   ToDo
                 </Link>
               </h1>
               <div style={{ flexGrow: 1, textAlign: "right" }}>
                 {isAuthenticated && 
+                <>
+                   <NavLink to="/board" className="nav-item">
+                    Go to Board
+                    </NavLink>
                    <Button type="button"  onClick={logoutHandler} variant="contained" color="warning">
                   Logout 
                   </Button>
-                 
+                  </>
                 }
                 {!isAuthenticated &&
                 <>
