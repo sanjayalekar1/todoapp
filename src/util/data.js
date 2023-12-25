@@ -1,7 +1,7 @@
 export const dummyData = [
   {
     "id": 1,
-    "name": "Sign in form design",
+    "title": "Sign in form design",
     "stage": 0,
     "created_by": "30",
     "created_at": "2018-05-29T09:12:57.752Z",
@@ -9,7 +9,7 @@ export const dummyData = [
   },
   {
     "id": 2,
-    "name": "Login form design",
+    "title": "Login form design",
     "stage": 3,
     "created_by": "33",
     "created_at": "2018-05-29T09:12:57.752Z",
@@ -17,7 +17,7 @@ export const dummyData = [
   },
   {
     "id": 3,
-    "name": "Sign up api integration",
+    "title": "Sign up api integration",
     "stage": 1,
     "created_by": "33",
     "created_at": "2018-05-29T09:12:57.752Z",
@@ -25,7 +25,7 @@ export const dummyData = [
   },
   {
     "id": 4,
-    "name": "Login form API itegration",
+    "title": "Login form API itegration",
     "stage": 2,
     "created_by": "33",
     "created_at": "2018-05-29T09:12:57.752Z",
@@ -33,7 +33,7 @@ export const dummyData = [
   },
   {
     "id": 5,
-    "name": "Auth implementation using redux",
+    "title": "Auth implementation using redux",
     "stage": 2,
     "created_by": "33",
     "created_at": "2018-05-29T09:12:57.752Z",
@@ -41,7 +41,7 @@ export const dummyData = [
   },
   {
     "id": 6,
-    "name": "Dashboard Design",
+    "title": "Dashboard Design",
     "stage": 3,
     "created_by": "33",
     "created_at": "2018-05-29T09:12:57.752Z",

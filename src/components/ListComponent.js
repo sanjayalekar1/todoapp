@@ -1,17 +1,15 @@
 import { Grid } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { Card, CardHeader, CardContent } from "@mui/material";
 import TaskModelComponent from "./TaskModelComponent";
 import { dummyData } from "../util/data";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { EditNoteOutlined} from "@mui/icons-material";
 
 
-const backlogTasks = dummyData.filter((task) => task.stage === 0 && task);
-const todoTasks = dummyData.filter((task) => task.stage === 1 && task);
-const onGoingTasks = dummyData.filter((task) => task.stage === 2 && task);
-const doneTasks = dummyData.filter((task) => task.stage === 3 && task);
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -26,6 +24,24 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const ListComponent = (props) => {
+
+const [data,setData] = useState(dummyData);
+
+const backlogTasks = data.filter((task) => +task.stage === 0 && task);
+const todoTasks = data.filter((task) => +task.stage === 1 && task);
+const onGoingTasks = data.filter((task) => +task.stage === 2 && task);
+const doneTasks = data.filter((task) => +task.stage === 3 && task);
+
+  const taskHandler =(newTask)=>{
+    setData((prevTask)=>[...prevTask,newTask]);
+  }
+
+  const deleteTaskHandler = (taskTitle) =>{
+    const index = data.findIndex(task => task.title === taskTitle);
+    const updatedTasks = [...data.slice(0, index), ...data.slice(index + 1)];
+    setData(updatedTasks);
+  }
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid
@@ -35,17 +51,21 @@ const ListComponent = (props) => {
       >
         <Grid xs={4} sm={4} md={3} mt={10}>
           <Card style={{ backgroundColor: "#f0f0f0", padding: 0 }}>
-            <CardHeader title="Backlog"></CardHeader>
-            <CardContent>
-              {backlogTasks.map((task) => {
-                return (
-                  <Item key={task.name}>
-                    <h4>{task.name}</h4>
+            <CardHeader title="Backlog" style={{backgroundColor:'#8CBAE8'}}></CardHeader>
+            <CardContent style={{padding:8}}>
+              {backlogTasks.map((task,index) => {
+                return ( 
+                  <Item key={task.title}>
+                    <h4>{task.title}</h4>
+                    <div style={{ textAlign: 'right' }}>
+                    <EditNoteOutlined > </EditNoteOutlined>
+                    <DeleteForeverIcon  onClick ={()=>deleteTaskHandler(task.title)}/>
+                    </div>
                   </Item>
                 );
               })}
             </CardContent>
-            <TaskModelComponent stage="0" />
+            <TaskModelComponent stage="0" onaddTask = {(newTask) => taskHandler(newTask)} />
           </Card>
         </Grid>
         <Grid xs={4} sm={4} md={3} mt={10}>
@@ -56,18 +76,22 @@ const ListComponent = (props) => {
               marginLeft: "16px",
             }}
           >
-            <CardHeader title="Todo"></CardHeader>
-            <CardContent>
+            <CardHeader title="Todo" style={{backgroundColor:'#8CBAE8'}}></CardHeader>
+            <CardContent style={{padding:8}}>
               {todoTasks.map((task) => {
                 return (
-                  <Item key={task.name}>
-                    <h4>{task.name}</h4>
+                  <Item key={task.title}>
+                    <h4>{task.title}</h4>
+                    <div style={{ textAlign: 'right' }}>
+                    <EditNoteOutlined  />
+                    <DeleteForeverIcon onClick ={()=>deleteTaskHandler(task.title)}/>
+                    </div>
                   </Item>
                 );
               })}
             </CardContent>
 
-            <TaskModelComponent stage="1" />
+            <TaskModelComponent stage="1" onaddTask = {(newTask) => taskHandler(newTask)} />
           </Card>
         </Grid>
         <Grid xs={4} sm={4} md={3} mt={10}>
@@ -80,18 +104,22 @@ const ListComponent = (props) => {
           >
             <CardHeader
               title="OnGoing"
-             
+              style={{backgroundColor:'#8CBAE8'}}
             ></CardHeader>
-            <CardContent>
+            <CardContent style={{padding:8}}>
               {onGoingTasks.map((task) => {
                 return (
-                  <Item key={task.name}>
-                    <h4>{task.name}</h4>
+                  <Item key={task.title}>
+                    <h4>{task.title}</h4>
+                    <div style={{ textAlign: 'right' }}>
+                    <EditNoteOutlined  />
+                    <DeleteForeverIcon onClick ={()=>deleteTaskHandler(task.title)} />
+                    </div>
                   </Item>
                 );
               })}
             </CardContent>
-            <TaskModelComponent stage="2" />
+            <TaskModelComponent stage="2" onaddTask = {(newTask) => taskHandler(newTask)} />
           </Card>
         </Grid>
         <Grid xs={4} sm={4} md={3} mt={10}>
@@ -104,17 +132,22 @@ const ListComponent = (props) => {
           >
             <CardHeader
               title="Done"
+              style={{backgroundColor:'#8CBAE8'}}
             ></CardHeader>
-            <CardContent>
+            <CardContent style={{padding:8}}>
               {doneTasks.map((task) => {
                 return (
-                  <Item key={task.name}>
-                    <h4>{task.name}</h4>
+                  <Item key={task.title}>
+                    <h4>{task.title}</h4>
+                    <div style={{ textAlign: 'right' }}>
+                    <EditNoteOutlined  />
+                    <DeleteForeverIcon onClick ={()=>deleteTaskHandler(task.title)} />
+                    </div>
                   </Item>
                 );
               })}
             </CardContent>
-            <TaskModelComponent stage="3" />
+            <TaskModelComponent stage="3" onaddTask = {(newTask) => taskHandler(newTask)} />
           </Card>
         </Grid>
       </Grid>

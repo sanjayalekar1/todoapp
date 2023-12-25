@@ -4,7 +4,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TextField, Button, styled, Grid } from "@mui/material";
-import { dummyData } from "../util/data";
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 0),
@@ -13,7 +12,6 @@ const StyledGridItem = styled(Grid)(({ theme }) => ({
 
 const TaskModelComponent = (props) => {
   const [open, setOpen] = useState(false);
-  const [tasks, setTasks] = useState(dummyData);
   const [newTask, setNewTask] = useState({
     id:'',
     title: '',
@@ -28,7 +26,7 @@ const TaskModelComponent = (props) => {
     setNewTask((prevTask) => ({
       ...prevTask,
       [name]: value,
-      created_by:33,
+      created_by:'33',
       created_at:new Date().toISOString(),
       updated_by:new Date().toISOString(),
       id:Math.random(),
@@ -46,11 +44,7 @@ const TaskModelComponent = (props) => {
 
   const addTaskHandler = (e) => {
     e.preventDefault();
-    setTasks((prevTask)=>({
-      ...prevTask,[prevTask.length++]:newTask
-    }));
-    localStorage.setItem('tasks',JSON.stringify(tasks));
-    setNewTask({title:'',stage:0});
+    props.onaddTask(newTask);
   };
  
   return (
