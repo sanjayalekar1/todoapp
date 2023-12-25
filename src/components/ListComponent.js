@@ -8,9 +8,9 @@ import TaskModelComponent from "./TaskModelComponent";
 import { dummyData } from "../util/data";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { EditNoteOutlined} from "@mui/icons-material";
-
-
-
+import EditTaskModelComponent from './EditTaskModelComponent';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -41,7 +41,31 @@ const doneTasks = data.filter((task) => +task.stage === 3 && task);
     const updatedTasks = [...data.slice(0, index), ...data.slice(index + 1)];
     setData(updatedTasks);
   }
-  
+
+  const updateTaskHandler =(taskToUpdate) =>{
+    const index = data.findIndex(task => task.id === taskToUpdate.id);
+    const updatedTasks = [...data];
+    updatedTasks.splice(index, 1,taskToUpdate);
+    
+    setData(updatedTasks);
+    
+  }
+
+  const moveTaskStageForward = (taskToMove) => {
+    taskToMove.stage = taskToMove.stage +1;
+     const index = data.findIndex(task => task.id === taskToMove.id);
+     const updatedTasks = [...data];
+     updatedTasks.splice(index, 1,taskToMove);
+     setData(updatedTasks);
+  }
+
+  const moveTaskStageBack = (taskToMove) =>{
+    taskToMove.stage = taskToMove.stage - 1;
+    const index = data.findIndex(task => task.id === taskToMove.id);
+    const updatedTasks = [...data];
+    updatedTasks.splice(index, 1,taskToMove);
+    setData(updatedTasks);
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid
@@ -58,7 +82,8 @@ const doneTasks = data.filter((task) => +task.stage === 3 && task);
                   <Item key={task.title}>
                     <h4>{task.title}</h4>
                     <div style={{ textAlign: 'right' }}>
-                    <EditNoteOutlined > </EditNoteOutlined>
+                      <ChevronRightIcon onClick = {() => moveTaskStageForward(task)} />
+                    <EditTaskModelComponent  task ={task}  onUpdateTask = {(newTask) => updateTaskHandler(newTask)}/>
                     <DeleteForeverIcon  onClick ={()=>deleteTaskHandler(task.title)}/>
                     </div>
                   </Item>
@@ -83,7 +108,9 @@ const doneTasks = data.filter((task) => +task.stage === 3 && task);
                   <Item key={task.title}>
                     <h4>{task.title}</h4>
                     <div style={{ textAlign: 'right' }}>
-                    <EditNoteOutlined  />
+                    <ChevronLeftIcon  onClick = {() => moveTaskStageBack(task)}  />
+                    <ChevronRightIcon onClick = {() => moveTaskStageForward(task)} />
+                    <EditTaskModelComponent  task ={task}  onUpdateTask = {(newTask) => updateTaskHandler(newTask)}/>
                     <DeleteForeverIcon onClick ={()=>deleteTaskHandler(task.title)}/>
                     </div>
                   </Item>
@@ -112,7 +139,9 @@ const doneTasks = data.filter((task) => +task.stage === 3 && task);
                   <Item key={task.title}>
                     <h4>{task.title}</h4>
                     <div style={{ textAlign: 'right' }}>
-                    <EditNoteOutlined  />
+                    <ChevronLeftIcon  onClick = {() => moveTaskStageBack(task)}  />
+                    <ChevronRightIcon onClick = {() => moveTaskStageForward(task)} />
+                    <EditTaskModelComponent  task ={task}  onUpdateTask = {(newTask) => updateTaskHandler(newTask)}/>
                     <DeleteForeverIcon onClick ={()=>deleteTaskHandler(task.title)} />
                     </div>
                   </Item>
@@ -140,7 +169,8 @@ const doneTasks = data.filter((task) => +task.stage === 3 && task);
                   <Item key={task.title}>
                     <h4>{task.title}</h4>
                     <div style={{ textAlign: 'right' }}>
-                    <EditNoteOutlined  />
+                    <ChevronLeftIcon  onClick = {() => moveTaskStageBack(task)}  />
+                    <EditTaskModelComponent  task ={task}  onUpdateTask = {(newTask) => updateTaskHandler(newTask)}/>
                     <DeleteForeverIcon onClick ={()=>deleteTaskHandler(task.title)} />
                     </div>
                   </Item>
