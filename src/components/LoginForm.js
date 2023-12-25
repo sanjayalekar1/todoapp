@@ -12,7 +12,7 @@ import {
   selectLoading,
   setToken,
   selectToken,
-  setAuthenticated
+  setAuthenticated,
 } from "../reducers/authSlice";
 import { useNavigate } from "react-router-dom";
 import {
@@ -35,7 +35,6 @@ const LoginForm = (props) => {
   const error = useSelector((state) => state.auth.auth.error);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
-
 
   const initialState = {
     userName: "",
@@ -84,18 +83,17 @@ const LoginForm = (props) => {
         dispatch(setUser(result.user));
         dispatch(setToken(result.token));
         dispatch(setAuthenticated(true));
-        
-        localStorage.setItem('isAuthenticated',true);
-        localStorage.setItem('token',result.token);
-        localStorage.setItem('user',JSON.stringify(result.user));
+
+        localStorage.setItem("isAuthenticated", true);
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("user", JSON.stringify(result.user));
         navigate("/dashboard");
       } else {
         // localStorage.removeItem('isAuthenticated');
         // localStorage.removeItem('token');
         // localStorage.removeItem('user');
-       dispatch(setError("Invalid username or password"));
-       navigate('/login');
-
+        dispatch(setError("Invalid username or password"));
+        navigate("/login");
       }
     } catch (error) {
       dispatch(setError("Error in fetching API"));
@@ -152,10 +150,10 @@ const LoginForm = (props) => {
         </Grid>
 
         <Button type="submit" fullWidth variant="contained" color="primary">
-         {loading ? 'loading...' : 'Login' } 
+          {loading ? "loading..." : "Login"}
         </Button>
-        <Typography variant="body1" color="error" align = 'center' >
-            {error}
+        <Typography variant="body1" color="error" align="center">
+          {error}
         </Typography>
       </form>
       <Typography varient="h6" mt={5}>

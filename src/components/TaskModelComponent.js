@@ -13,12 +13,12 @@ const StyledGridItem = styled(Grid)(({ theme }) => ({
 const TaskModelComponent = (props) => {
   const [open, setOpen] = useState(false);
   const [newTask, setNewTask] = useState({
-    id:'',
-    title: '',
+    id: "",
+    title: "",
     stage: props.stage,
-    created_by:'',
-    created_at:null,
-    updated_by:null,
+    created_by: "",
+    created_at: null,
+    updated_by: null,
   });
 
   const inputChangeHandler = (event) => {
@@ -26,11 +26,10 @@ const TaskModelComponent = (props) => {
     setNewTask((prevTask) => ({
       ...prevTask,
       [name]: value,
-      created_by:'33',
-      created_at:new Date().toISOString(),
-      updated_by:new Date().toISOString(),
-      id:Math.random(),
-
+      created_by: "33",
+      created_at: new Date().toISOString(),
+      updated_by: new Date().toISOString(),
+      id: Math.random(),
     }));
   };
 
@@ -46,7 +45,7 @@ const TaskModelComponent = (props) => {
     e.preventDefault();
     props.onaddTask(newTask);
   };
- 
+
   return (
     <div style={{ margin: 20 }}>
       <Button variant="outlined" color="primary" onClick={handleOpen}>

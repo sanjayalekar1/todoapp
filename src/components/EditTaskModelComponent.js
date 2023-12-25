@@ -4,7 +4,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TextField, Button, styled, Grid } from "@mui/material";
-import { EditNoteOutlined} from "@mui/icons-material";
+import { EditNoteOutlined } from "@mui/icons-material";
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 0),
@@ -13,7 +13,7 @@ const StyledGridItem = styled(Grid)(({ theme }) => ({
 
 const EditTaskModelComponent = (props) => {
   const [open, setOpen] = useState(false);
-  const [updatedTask,setUpdatedTask] = useState(props.task);
+  const [updatedTask, setUpdatedTask] = useState(props.task);
 
   const inputChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -38,7 +38,7 @@ const EditTaskModelComponent = (props) => {
   };
 
   return (
-    <div >
+    <div>
       <EditNoteOutlined onClick={handleOpen} />
 
       <Dialog open={open} onClose={handleClose}>
@@ -57,10 +57,9 @@ const EditTaskModelComponent = (props) => {
                 className="field-top-margin"
                 onChange={inputChangeHandler}
                 value={updatedTask.title}
-               
               />
             </StyledGridItem>
-        
+
             <Button
               variant="contained"
               color="primary"
