@@ -12,6 +12,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { TaskContext } from "../context/task-context";
 import { IconButton } from "@mui/material";
+import { useSelector } from "react-redux";
+import { selectUser } from "../reducers/authSlice";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -29,18 +31,37 @@ const MyIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
+let userId = 0;
 const ListComponent = (props) => {
+  const user = useSelector(selectUser);
+
+  if (typeof user == "string") {
+    userId = JSON.parse(user).id;
+  } else {
+    userId = user.id;
+  }
+
+  const userData = dummyData.filter((task) => task.created_by === userId);
+
   const taskCtx = useContext(TaskContext);
-  const [data, setData] = useState(dummyData);
+  const [data, setData] = useState(userData);
   const [error, setError] = useState(false);
 
-  const backlogTasks = data.filter((task) => +task.stage === 0 && task);
-  const todoTasks = data.filter((task) => +task.stage === 1 && task);
-  const onGoingTasks = data.filter((task) => +task.stage === 2 && task);
-  const doneTasks = data.filter((task) => +task.stage === 3 && task);
+  const backlogTasks = data.filter(
+    (task) => +task.stage === 0 && task.created_by == userId && task
+  );
+  const todoTasks = data.filter(
+    (task) => +task.stage === 1 && task.created_by == userId && task
+  );
+  const onGoingTasks = data.filter(
+    (task) => +task.stage === 2 && task.created_by == userId && task
+  );
+  const doneTasks = data.filter(
+    (task) => +task.stage === 3 && task.created_by == userId && task
+  );
 
   taskCtx.count = {
-    total: data.length,
+    total: userData.length,
     pending: todoTasks.length + onGoingTasks.length,
     completed: doneTasks.length,
   };
@@ -94,7 +115,7 @@ const ListComponent = (props) => {
     updatedTasks.splice(index, 1, taskToMove);
     setData(updatedTasks);
   };
-
+  console.log(data);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <h2>Teams Board</h2>

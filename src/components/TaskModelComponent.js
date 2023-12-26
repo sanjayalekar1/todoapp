@@ -4,6 +4,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TextField, Button, styled, Grid ,Typography} from "@mui/material";
+import { useSelector } from "react-redux";
+import { selectUser } from "../reducers/authSlice";
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 0),
@@ -21,7 +23,7 @@ const TaskModelComponent = (props) => {
     updated_by: null,
   });
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = useSelector(selectUser);;
   const userId = user.id; 
   const inputChangeHandler = (event) => {
     const { name, value } = event.target;

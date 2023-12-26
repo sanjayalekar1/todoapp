@@ -14,8 +14,9 @@ import { TaskContext } from "./context/task-context";
 import { dummyData } from "./util/data";
 
 function App() {
-  const todoTasks = dummyData.filter((task) => +task.stage === 1 && task);
-  const onGoingTasks = dummyData.filter((task) => +task.stage === 2 && task);
+
+  const todoTasks = dummyData.filter((task) => +task.stage === 1  && task);
+  const onGoingTasks = dummyData.filter((task) => +task.stage === 2  && task);
   const doneTasks = dummyData.filter((task) => +task.stage === 3 && task);
 
   const count = {
