@@ -20,11 +20,13 @@ import {
   Button,
 } from "@mui/material";
 
+
 const StyledGridItem = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 0),
 }));
 
 const LoginForm = (props) => {
+  const apiUrl = process.env.REACT_APP_BACKEND_API_URL;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.auth.loading);
@@ -63,9 +65,11 @@ const LoginForm = (props) => {
   };
 
   const fetchLoginData = async () => {
+    
+   
     try {
       dispatch(setLoading(true));
-      const response = await fetch("http://127.0.0.1:8000/api/login", {
+      const response = await fetch(apiUrl+"/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +102,7 @@ const LoginForm = (props) => {
       fetchLoginData();
     }
   };
-
+ 
   return (
     <Container maxWidth="xs" className="container">
       <Typography variant="h5" align="center">

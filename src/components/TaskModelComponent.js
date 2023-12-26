@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TextField, Button, styled, Grid ,Typography} from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectUser } from "../reducers/authSlice";
+import { selectUser, setError } from "../reducers/authSlice";
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 0),
@@ -22,9 +22,13 @@ const TaskModelComponent = (props) => {
     created_at: null,
     updated_by: null,
   });
-
-  const user = useSelector(selectUser);;
-  const userId = user.id; 
+  let userId = 0;
+  const user = useSelector(selectUser);
+  if (typeof user == "string") {
+    userId = JSON.parse(user).id;
+  } else {
+    userId = user.id;
+  }
   const inputChangeHandler = (event) => {
     const { name, value } = event.target;
     setNewTask((prevTask) => ({
@@ -35,6 +39,7 @@ const TaskModelComponent = (props) => {
       updated_by: new Date().toISOString(),
       id: Math.random(),
     }));
+    
   };
 
   const handleOpen = () => {
@@ -49,6 +54,9 @@ const TaskModelComponent = (props) => {
   const addTaskHandler = (e) => {
     e.preventDefault();
     props.onaddTask(newTask);
+    console.log("error",props.error);
+    props.error !=='' ? setOpen(true) :setOpen(false);
+    
   };
 
   return (

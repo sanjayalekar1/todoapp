@@ -8,14 +8,15 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/system";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
-  margin: theme.spacing(2, 0), 
+  margin: theme.spacing(2, 0),
 }));
 
 const SignUpForm = (props) => {
-  const navigate = useNavigate()
+  const apiUrl = process.env.REACT_APP_BACKEND_API_URL;
+  const navigate = useNavigate();
   const initialState = {
     userName: "",
     email: "",
@@ -25,7 +26,8 @@ const SignUpForm = (props) => {
     profileImage: "",
   };
   const [formData, setFormData] = useState(initialState);
-  const [isSignupSuccess,setIsSignupSuccess] = useState(false);
+  const [isSignupSuccess, setIsSignupSuccess] = useState(false);
+  const [isSignupFail, setIsSignupFail] = useState(false);
   const [errors, setErrors] = useState(initialState);
 
   const validateForm = () => {
@@ -74,7 +76,7 @@ const SignUpForm = (props) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const response = await fetch("http://127.0.0.1:8000/api/register", {
+      const response = await fetch(apiUrl + "/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,14 +86,13 @@ const SignUpForm = (props) => {
       if (response.ok) {
         const result = await response.json();
         setIsSignupSuccess(true);
-        setTimeout(()=>{
-         
+        setTimeout(() => {
           navigate("/login");
         }, 2000);
-       
-        
+
         console.log("registration Successful");
       } else {
+        setIsSignupFail(true);
         console.log("Error in user registration");
       }
     } else {
@@ -100,12 +101,13 @@ const SignUpForm = (props) => {
   };
 
   const inputChangeHandler = (e) => {
-   const { name, value, type, files } = e.target;
-   const file = type === 'file' ? files[0] : null;
-   setFormData((prevData) => ({
-    ...prevData,
-    [name]: type === 'file' ? file : value,
-  }));
+    setIsSignupFail(false);
+    const { name, value, type, files } = e.target;
+    const file = type === "file" ? files[0] : null;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "file" ? file : value,
+    }));
   };
 
   return (
@@ -113,9 +115,16 @@ const SignUpForm = (props) => {
       <Typography variant="h5" align="center">
         Sign Up
       </Typography>
-      {isSignupSuccess && <Typography variant="body1" style={{ color: '#4CAF50' }} align="center">
+      {isSignupSuccess && (
+        <Typography variant="body1" style={{ color: "#4CAF50" }} align="center">
           Sign up Successful ! Please Login.
-        </Typography>} 
+        </Typography>
+      )}
+      {isSignupFail && (
+        <Typography variant="body1" color="error" align="center">
+          User Already Exist !
+        </Typography>
+      )}
       <form onSubmit={submitHandler}>
         <Grid>
           <StyledGridItem item xs={12}>
@@ -225,7 +234,7 @@ const SignUpForm = (props) => {
           Sign Up
         </Button>
       </form>
-     
+      <br /> <br />
     </Container>
   );
 };

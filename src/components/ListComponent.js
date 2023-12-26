@@ -48,16 +48,16 @@ const ListComponent = (props) => {
   const [error, setError] = useState(false);
 
   const backlogTasks = data.filter(
-    (task) => +task.stage === 0 && task.created_by == userId && task
+    (task) => +task.stage === 0 && task.created_by === userId && task
   );
   const todoTasks = data.filter(
-    (task) => +task.stage === 1 && task.created_by == userId && task
+    (task) => +task.stage === 1 && task.created_by ===userId && task
   );
   const onGoingTasks = data.filter(
-    (task) => +task.stage === 2 && task.created_by == userId && task
+    (task) => +task.stage === 2 && task.created_by === userId && task
   );
   const doneTasks = data.filter(
-    (task) => +task.stage === 3 && task.created_by == userId && task
+    (task) => +task.stage === 3 && task.created_by === userId && task
   );
 
   taskCtx.count = {
@@ -69,7 +69,7 @@ const ListComponent = (props) => {
   const taskHandler = (newTask) => {
     const result = data.filter((task) => task.title.includes(newTask.title));
     if (result.length > 0) {
-      setError("Entered task title already exist !");
+        setError("Entered task title already exist !");
       return;
     }
     setData((prevTask) => [...prevTask, newTask]);
