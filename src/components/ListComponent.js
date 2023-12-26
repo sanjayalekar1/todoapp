@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -24,7 +24,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const ListComponent = (props) => {
-
   const taskCtx = useContext(TaskContext);
   const [data, setData] = useState(dummyData);
 
@@ -33,14 +32,15 @@ const ListComponent = (props) => {
   const onGoingTasks = data.filter((task) => +task.stage === 2 && task);
   const doneTasks = data.filter((task) => +task.stage === 3 && task);
 
-   taskCtx.count = {
-    'total':data.length,
-    'pending':todoTasks.length+onGoingTasks.length,
-    'completed':doneTasks.length
-  }
-  //console.log(taskCtx.count);
+  taskCtx.count = {
+    total: data.length,
+    pending: todoTasks.length + onGoingTasks.length,
+    completed: doneTasks.length,
+  };
+
 
   const taskHandler = (newTask) => {
+    //const result = data.filter((task) => task.title.includes(newTask.title));
     setData((prevTask) => [...prevTask, newTask]);
   };
 
@@ -109,7 +109,8 @@ const ListComponent = (props) => {
             </CardContent>
             <TaskModelComponent
               stage="0"
-              onaddTask={(newTask) => taskHandler(newTask)}
+              onaddTask={(newTask) => taskHandler(newTask)
+              }  
             />
           </Card>
         </Grid>

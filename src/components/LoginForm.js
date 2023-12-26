@@ -7,11 +7,8 @@ import {
   setLoading,
   setError,
   selectIsAuthenticated,
-  selectError,
   selectUser,
-  selectLoading,
   setToken,
-  selectToken,
   setAuthenticated,
 } from "../reducers/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +17,6 @@ import {
   TextField,
   Typography,
   Grid,
-  Input,
   Button,
 } from "@mui/material";
 
