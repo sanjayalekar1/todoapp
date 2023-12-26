@@ -10,8 +10,20 @@ import { selectIsAuthenticated } from "./reducers/authSlice";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Board from "./pages/Board";
+import { TaskContext } from "./context/task-context";
+import { dummyData } from "./util/data";
 
 function App() {
+  const todoTasks = dummyData.filter((task) => +task.stage === 1 && task);
+  const onGoingTasks = dummyData.filter((task) => +task.stage === 2 && task);
+  const doneTasks = dummyData.filter((task) => +task.stage === 3 && task);
+
+  const count = {
+    'total':dummyData.length,
+    'pending':todoTasks.length+onGoingTasks.length,
+    'completed':doneTasks.length
+  };  
+ 
   const PrivateRoute = ({ element }) => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
 
@@ -47,7 +59,9 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={router}></RouterProvider>;
+  return(<TaskContext.Provider value={{ count}}>
+    <RouterProvider router={router}></RouterProvider>;
+  </TaskContext.Provider>);
 }
 
 export default App;

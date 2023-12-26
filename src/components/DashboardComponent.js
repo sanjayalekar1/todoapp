@@ -1,19 +1,23 @@
-import React from "react";
+import React,{useContext} from "react";
 import { Container, Grid } from "@mui/material";
 import DashboardCard from "../UI/DashboardCard";
+import { TaskContext } from "../context/task-context";
+
 
 const DashboardComponent = (props) => {
+
+  const taskCtx = useContext(TaskContext);
   const cardsData = [
     {
-      count: 2,
+      count: taskCtx.count.total,
       description: "Total Tasks",
     },
     {
-      count: 2,
+      count: taskCtx.count.pending,
       description: "Task Completed",
     },
     {
-      count: 2,
+      count: taskCtx.count.completed,
       description: "Task Pending",
     },
   ];

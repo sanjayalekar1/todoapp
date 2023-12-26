@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -10,6 +10,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditTaskModelComponent from "./EditTaskModelComponent";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { TaskContext } from "../context/task-context";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -23,12 +24,21 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const ListComponent = (props) => {
+
+  const taskCtx = useContext(TaskContext);
   const [data, setData] = useState(dummyData);
 
   const backlogTasks = data.filter((task) => +task.stage === 0 && task);
   const todoTasks = data.filter((task) => +task.stage === 1 && task);
   const onGoingTasks = data.filter((task) => +task.stage === 2 && task);
   const doneTasks = data.filter((task) => +task.stage === 3 && task);
+
+   taskCtx.count = {
+    'total':data.length,
+    'pending':todoTasks.length+onGoingTasks.length,
+    'completed':doneTasks.length
+  }
+  //console.log(taskCtx.count);
 
   const taskHandler = (newTask) => {
     setData((prevTask) => [...prevTask, newTask]);
