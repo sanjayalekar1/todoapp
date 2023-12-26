@@ -3,7 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TextField, Button, styled, Grid } from "@mui/material";
+import { TextField, Button, styled, Grid ,Typography} from "@mui/material";
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 0),
@@ -21,12 +21,14 @@ const TaskModelComponent = (props) => {
     updated_by: null,
   });
 
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user.id; 
   const inputChangeHandler = (event) => {
     const { name, value } = event.target;
     setNewTask((prevTask) => ({
       ...prevTask,
       [name]: value,
-      created_by: "33",
+      created_by: userId,
       created_at: new Date().toISOString(),
       updated_by: new Date().toISOString(),
       id: Math.random(),
@@ -39,6 +41,7 @@ const TaskModelComponent = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+    props.clearError();
   };
 
   const addTaskHandler = (e) => {
@@ -83,6 +86,9 @@ const TaskModelComponent = (props) => {
             >
               Save
             </Button>
+            {props.error &&  <Typography variant="body1" color="error" align="center">
+            Entered task title aleady exist !
+        </Typography>}
           </form>
         </DialogContent>
         <DialogActions>

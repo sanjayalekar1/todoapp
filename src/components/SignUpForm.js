@@ -6,9 +6,8 @@ import {
   Input,
   Button,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled } from "@mui/system";
-import { ErrorSharp } from "@mui/icons-material";
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 0), // Adjust the margin as needed
@@ -36,7 +35,7 @@ const SignUpForm = (props) => {
       isValid = false;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
     if (!formData.email.trim() || !emailRegex.test(formData.email)) {
       errors.email = "Valid emial is Required";
       isValid = false;
@@ -85,7 +84,7 @@ const SignUpForm = (props) => {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        const result = await response.json();
+        //const result = await response.json();
         console.log("registration Successful");
       } else {
         console.log("Error in user registration");

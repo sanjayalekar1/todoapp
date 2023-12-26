@@ -11,6 +11,7 @@ import EditTaskModelComponent from "./EditTaskModelComponent";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { TaskContext } from "../context/task-context";
+import { IconButton } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -22,10 +23,16 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   marginBottom: 10,
 }));
+const MyIconButton = styled(IconButton)(({ theme }) => ({
+  "&:hover": {
+    backgroundColor: "#8CBAE8",
+  },
+}));
 
 const ListComponent = (props) => {
   const taskCtx = useContext(TaskContext);
   const [data, setData] = useState(dummyData);
+  const [error, setError] = useState(false);
 
   const backlogTasks = data.filter((task) => +task.stage === 0 && task);
   const todoTasks = data.filter((task) => +task.stage === 1 && task);
@@ -38,10 +45,17 @@ const ListComponent = (props) => {
     completed: doneTasks.length,
   };
 
-
   const taskHandler = (newTask) => {
-    //const result = data.filter((task) => task.title.includes(newTask.title));
+    const result = data.filter((task) => task.title.includes(newTask.title));
+    if (result.length > 0) {
+      setError("Entered task title already exist !");
+      return;
+    }
     setData((prevTask) => [...prevTask, newTask]);
+  };
+
+  const clearErrorHandler = () => {
+    setError("");
   };
 
   const deleteTaskHandler = (taskTitle) => {
@@ -51,10 +65,18 @@ const ListComponent = (props) => {
   };
 
   const updateTaskHandler = (taskToUpdate) => {
-    const index = data.findIndex((task) => task.id === taskToUpdate.id);
-    const updatedTasks = [...data];
-    updatedTasks.splice(index, 1, taskToUpdate);
-    setData(updatedTasks);
+    
+    const result = data.filter((task) => task.title.includes(taskToUpdate.title));
+    if (result.length > 0) {
+      setError("Entered task title already exist !");
+      return ;
+    }else{
+      const index = data.findIndex((task) => task.id === taskToUpdate.id);
+      const updatedTasks = [...data];
+      updatedTasks.splice(index, 1, taskToUpdate);
+      setData(updatedTasks);
+    }
+   
   };
 
   const moveTaskStageForward = (taskToMove) => {
@@ -72,6 +94,7 @@ const ListComponent = (props) => {
     updatedTasks.splice(index, 1, taskToMove);
     setData(updatedTasks);
   };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <h2>Teams Board</h2>
@@ -91,17 +114,30 @@ const ListComponent = (props) => {
                 return (
                   <Item key={task.title}>
                     <h4>{task.title}</h4>
-                    <div style={{ textAlign: "right" }}>
-                      <ChevronRightIcon
-                        onClick={() => moveTaskStageForward(task)}
-                      />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "right",
+                        alignItems: "center",
+                      }}
+                    >
+                      <MyIconButton onClick={() => moveTaskStageForward(task)}>
+                        <ChevronRightIcon />
+                      </MyIconButton>
+
                       <EditTaskModelComponent
                         task={task}
                         onUpdateTask={(newTask) => updateTaskHandler(newTask)}
+                        error={error}
+                        clearError={clearErrorHandler}
                       />
-                      <DeleteForeverIcon
-                        onClick={() => deleteTaskHandler(task.title)}
-                      />
+
+                      <MyIconButton>
+                        <DeleteForeverIcon
+                          fontSize="small"
+                          onClick={() => deleteTaskHandler(task.title)}
+                        />
+                      </MyIconButton>
                     </div>
                   </Item>
                 );
@@ -109,8 +145,9 @@ const ListComponent = (props) => {
             </CardContent>
             <TaskModelComponent
               stage="0"
-              onaddTask={(newTask) => taskHandler(newTask)
-              }  
+              onaddTask={(newTask) => taskHandler(newTask)}
+              error={error}
+              clearError={clearErrorHandler}
             />
           </Card>
         </Grid>
@@ -131,20 +168,30 @@ const ListComponent = (props) => {
                 return (
                   <Item key={task.title}>
                     <h4>{task.title}</h4>
-                    <div style={{ textAlign: "right" }}>
-                      <ChevronLeftIcon
-                        onClick={() => moveTaskStageBack(task)}
-                      />
-                      <ChevronRightIcon
-                        onClick={() => moveTaskStageForward(task)}
-                      />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "right",
+                        alignItems: "center",
+                      }}
+                    >
+                      <MyIconButton onClick={() => moveTaskStageBack(task)}>
+                        <ChevronLeftIcon />
+                      </MyIconButton>
+
+                      <MyIconButton onClick={() => moveTaskStageForward(task)}>
+                        <ChevronRightIcon />
+                      </MyIconButton>
                       <EditTaskModelComponent
                         task={task}
                         onUpdateTask={(newTask) => updateTaskHandler(newTask)}
                       />
-                      <DeleteForeverIcon
-                        onClick={() => deleteTaskHandler(task.title)}
-                      />
+                      <MyIconButton>
+                        <DeleteForeverIcon
+                          fontSize="small"
+                          onClick={() => deleteTaskHandler(task.title)}
+                        />
+                      </MyIconButton>
                     </div>
                   </Item>
                 );
@@ -154,6 +201,8 @@ const ListComponent = (props) => {
             <TaskModelComponent
               stage="1"
               onaddTask={(newTask) => taskHandler(newTask)}
+              error={error}
+              clearError={clearErrorHandler}
             />
           </Card>
         </Grid>
@@ -174,20 +223,30 @@ const ListComponent = (props) => {
                 return (
                   <Item key={task.title}>
                     <h4>{task.title}</h4>
-                    <div style={{ textAlign: "right" }}>
-                      <ChevronLeftIcon
-                        onClick={() => moveTaskStageBack(task)}
-                      />
-                      <ChevronRightIcon
-                        onClick={() => moveTaskStageForward(task)}
-                      />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "right",
+                        alignItems: "center",
+                      }}
+                    >
+                      <MyIconButton onClick={() => moveTaskStageBack(task)}>
+                        <ChevronLeftIcon fontSize="small" />
+                      </MyIconButton>
+
+                      <MyIconButton onClick={() => moveTaskStageForward(task)}>
+                        <ChevronRightIcon />
+                      </MyIconButton>
                       <EditTaskModelComponent
                         task={task}
                         onUpdateTask={(newTask) => updateTaskHandler(newTask)}
                       />
-                      <DeleteForeverIcon
-                        onClick={() => deleteTaskHandler(task.title)}
-                      />
+                      <MyIconButton>
+                        <DeleteForeverIcon
+                          fontSize="small"
+                          onClick={() => deleteTaskHandler(task.title)}
+                        />
+                      </MyIconButton>
                     </div>
                   </Item>
                 );
@@ -196,6 +255,8 @@ const ListComponent = (props) => {
             <TaskModelComponent
               stage="2"
               onaddTask={(newTask) => taskHandler(newTask)}
+              error={error}
+              clearError={clearErrorHandler}
             />
           </Card>
         </Grid>
@@ -216,17 +277,26 @@ const ListComponent = (props) => {
                 return (
                   <Item key={task.title}>
                     <h4>{task.title}</h4>
-                    <div style={{ textAlign: "right" }}>
-                      <ChevronLeftIcon
-                        onClick={() => moveTaskStageBack(task)}
-                      />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "right",
+                        alignItems: "center",
+                      }}
+                    >
+                      <MyIconButton onClick={() => moveTaskStageBack(task)}>
+                        <ChevronLeftIcon fontSize="small" />
+                      </MyIconButton>
                       <EditTaskModelComponent
                         task={task}
                         onUpdateTask={(newTask) => updateTaskHandler(newTask)}
                       />
-                      <DeleteForeverIcon
-                        onClick={() => deleteTaskHandler(task.title)}
-                      />
+                      <MyIconButton>
+                        <DeleteForeverIcon
+                          fontSize="small"
+                          onClick={() => deleteTaskHandler(task.title)}
+                        />
+                      </MyIconButton>
                     </div>
                   </Item>
                 );
@@ -235,6 +305,8 @@ const ListComponent = (props) => {
             <TaskModelComponent
               stage="3"
               onaddTask={(newTask) => taskHandler(newTask)}
+              error={error}
+              clearError={clearErrorHandler}
             />
           </Card>
         </Grid>

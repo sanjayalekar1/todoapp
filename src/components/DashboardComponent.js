@@ -25,6 +25,7 @@ const DashboardComponent = (props) => {
   return (
     <>
       <Container>
+        <h2>Dashboard</h2>
         <Grid container spacing={2} mt={2}>
           {cardsData.map((card, index) => (
             <Grid item xs={12} sm={4} key={index}>

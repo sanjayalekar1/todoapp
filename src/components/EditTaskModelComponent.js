@@ -3,14 +3,20 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TextField, Button, styled, Grid } from "@mui/material";
+import { TextField, Button, styled, Grid ,IconButton,Typography} from "@mui/material";
 import { EditNoteOutlined } from "@mui/icons-material";
+
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 0),
   width: 400,
 }));
 
+const MyIconButton = styled(IconButton)(({ theme }) => ({
+  "&:hover": {
+    backgroundColor: '#8CBAE8',
+  },
+}))
 const EditTaskModelComponent = (props) => {
   const [open, setOpen] = useState(false);
   const [updatedTask, setUpdatedTask] = useState(props.task);
@@ -28,19 +34,20 @@ const EditTaskModelComponent = (props) => {
   };
 
   const handleClose = () => {
+    props.clearError();
     setOpen(false);
   };
 
   const updateTaskHandler = (e) => {
     e.preventDefault();
     props.onUpdateTask(updatedTask);
-    setOpen(false);
   };
 
   return (
     <div>
-      <EditNoteOutlined onClick={handleOpen} />
-
+      <MyIconButton>
+      <EditNoteOutlined  onClick={handleOpen} />
+      </MyIconButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Task</DialogTitle>
         <DialogContent>
@@ -67,6 +74,8 @@ const EditTaskModelComponent = (props) => {
             >
               Save
             </Button>
+            {props.error &&  <Typography variant="body1" color="error" align="center">
+            Entered task title aleady exist !</Typography>}
           </form>
         </DialogContent>
         <DialogActions>
