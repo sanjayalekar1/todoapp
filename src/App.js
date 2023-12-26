@@ -60,7 +60,7 @@ function App() {
     },
   ]);
   return(<TaskContext.Provider value={{ count}}>
-    <RouterProvider router={router}></RouterProvider>;
+    <RouterProvider router={router}></RouterProvider>
   </TaskContext.Provider>);
 }
 

@@ -85,9 +85,6 @@ const LoginForm = (props) => {
         localStorage.setItem("user", JSON.stringify(result.user));
         navigate("/dashboard");
       } else {
-        // localStorage.removeItem('isAuthenticated');
-        // localStorage.removeItem('token');
-        // localStorage.removeItem('user');
         dispatch(setError("Invalid username or password"));
         navigate("/login");
       }

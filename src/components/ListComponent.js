@@ -65,18 +65,18 @@ const ListComponent = (props) => {
   };
 
   const updateTaskHandler = (taskToUpdate) => {
-    
-    const result = data.filter((task) => task.title.includes(taskToUpdate.title));
+    const result = data.filter((task) =>
+      task.title.includes(taskToUpdate.title)
+    );
     if (result.length > 0) {
       setError("Entered task title already exist !");
-      return ;
-    }else{
+      return;
+    } else {
       const index = data.findIndex((task) => task.id === taskToUpdate.id);
       const updatedTasks = [...data];
       updatedTasks.splice(index, 1, taskToUpdate);
       setData(updatedTasks);
     }
-   
   };
 
   const moveTaskStageForward = (taskToMove) => {
@@ -104,7 +104,13 @@ const ListComponent = (props) => {
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         <Grid item xs={4} sm={4} md={3}>
-          <Card style={{ backgroundColor: "#f0f0f0", padding: 0 }}>
+          <Card
+            style={{
+              backgroundColor: "#f0f0f0",
+              padding: 0,
+              margin: 1,
+            }}
+          >
             <CardHeader
               title="Backlog"
               style={{ backgroundColor: "#8CBAE8" }}
@@ -156,7 +162,7 @@ const ListComponent = (props) => {
             style={{
               backgroundColor: "#f0f0f0",
               padding: 0,
-              marginLeft: "16px",
+              margin: 1,
             }}
           >
             <CardHeader
@@ -185,6 +191,8 @@ const ListComponent = (props) => {
                       <EditTaskModelComponent
                         task={task}
                         onUpdateTask={(newTask) => updateTaskHandler(newTask)}
+                        error={error}
+                        clearError={clearErrorHandler}
                       />
                       <MyIconButton>
                         <DeleteForeverIcon
@@ -211,7 +219,7 @@ const ListComponent = (props) => {
             style={{
               backgroundColor: "#f0f0f0",
               padding: 0,
-              marginLeft: "16px",
+              margin: 1,
             }}
           >
             <CardHeader
@@ -231,7 +239,7 @@ const ListComponent = (props) => {
                       }}
                     >
                       <MyIconButton onClick={() => moveTaskStageBack(task)}>
-                        <ChevronLeftIcon fontSize="small" />
+                        <ChevronLeftIcon />
                       </MyIconButton>
 
                       <MyIconButton onClick={() => moveTaskStageForward(task)}>
@@ -240,6 +248,8 @@ const ListComponent = (props) => {
                       <EditTaskModelComponent
                         task={task}
                         onUpdateTask={(newTask) => updateTaskHandler(newTask)}
+                        error={error}
+                        clearError={clearErrorHandler}
                       />
                       <MyIconButton>
                         <DeleteForeverIcon
@@ -265,7 +275,7 @@ const ListComponent = (props) => {
             style={{
               backgroundColor: "#f0f0f0",
               padding: 0,
-              marginLeft: "16px",
+              margin: 1,
             }}
           >
             <CardHeader
@@ -285,11 +295,13 @@ const ListComponent = (props) => {
                       }}
                     >
                       <MyIconButton onClick={() => moveTaskStageBack(task)}>
-                        <ChevronLeftIcon fontSize="small" />
+                        <ChevronLeftIcon />
                       </MyIconButton>
                       <EditTaskModelComponent
                         task={task}
                         onUpdateTask={(newTask) => updateTaskHandler(newTask)}
+                        error={error}
+                        clearError={clearErrorHandler}
                       />
                       <MyIconButton>
                         <DeleteForeverIcon

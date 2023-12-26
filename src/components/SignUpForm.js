@@ -8,12 +8,14 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/system";
+import {useNavigate} from 'react-router-dom';
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
-  margin: theme.spacing(2, 0), // Adjust the margin as needed
+  margin: theme.spacing(2, 0), 
 }));
 
 const SignUpForm = (props) => {
+  const navigate = useNavigate()
   const initialState = {
     userName: "",
     email: "",
@@ -23,7 +25,7 @@ const SignUpForm = (props) => {
     profileImage: "",
   };
   const [formData, setFormData] = useState(initialState);
-
+  const [isSignupSuccess,setIsSignupSuccess] = useState(false);
   const [errors, setErrors] = useState(initialState);
 
   const validateForm = () => {
@@ -61,22 +63,18 @@ const SignUpForm = (props) => {
 
     if (formData.profileImage !== "") {
       const allowedImageTypes = ["image/jpeg", "image/png"];
-
       if (!allowedImageTypes.includes(formData.profileImage.type)) {
         errors.profileImage = "Please Upload Valid Image (jpeg/png)";
         isValid = false;
       }
     }
-
     setErrors(errors);
     return isValid;
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    console.log(JSON.stringify(formData));
     if (validateForm()) {
-      const response = fetch("http://127.0.0.1:8000/api/register", {
+      const response = await fetch("http://127.0.0.1:8000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +82,14 @@ const SignUpForm = (props) => {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        //const result = await response.json();
+        const result = await response.json();
+        setIsSignupSuccess(true);
+        setTimeout(()=>{
+         
+          navigate("/login");
+        }, 2000);
+       
+        
         console.log("registration Successful");
       } else {
         console.log("Error in user registration");
@@ -95,7 +100,12 @@ const SignUpForm = (props) => {
   };
 
   const inputChangeHandler = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+   const { name, value, type, files } = e.target;
+   const file = type === 'file' ? files[0] : null;
+   setFormData((prevData) => ({
+    ...prevData,
+    [name]: type === 'file' ? file : value,
+  }));
   };
 
   return (
@@ -103,6 +113,9 @@ const SignUpForm = (props) => {
       <Typography variant="h5" align="center">
         Sign Up
       </Typography>
+      {isSignupSuccess && <Typography variant="body1" style={{ color: '#4CAF50' }} align="center">
+          Sign up Successful ! Please Login.
+        </Typography>} 
       <form onSubmit={submitHandler}>
         <Grid>
           <StyledGridItem item xs={12}>
@@ -204,7 +217,7 @@ const SignUpForm = (props) => {
               onChange={inputChangeHandler}
             />
           </StyledGridItem>
-          <Typography variant="body1" color="error">
+          <Typography variant="body1" color="success">
             {errors.profileImage}
           </Typography>
         </Grid>
@@ -212,6 +225,7 @@ const SignUpForm = (props) => {
           Sign Up
         </Button>
       </form>
+     
     </Container>
   );
 };
