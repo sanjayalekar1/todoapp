@@ -41,9 +41,11 @@ const ListComponent = (props) => {
     userId = user.id;
   }
 
-  const userData = dummyData.filter((task) => task.created_by === userId);
+  const userData = dummyData.filter((task) => +task.created_by === userId);
 
-  const taskCtx = useContext(TaskContext);
+  //const {count} = useContext(TaskContext);
+
+
   const [data, setData] = useState(userData);
   const [error, setError] = useState(false);
 
@@ -51,7 +53,7 @@ const ListComponent = (props) => {
     (task) => +task.stage === 0 && task.created_by === userId && task
   );
   const todoTasks = data.filter(
-    (task) => +task.stage === 1 && task.created_by ===userId && task
+    (task) => +task.stage === 1 && task.created_by === userId && task
   );
   const onGoingTasks = data.filter(
     (task) => +task.stage === 2 && task.created_by === userId && task
@@ -60,23 +62,32 @@ const ListComponent = (props) => {
     (task) => +task.stage === 3 && task.created_by === userId && task
   );
 
-  taskCtx.count = {
-    total: userData.length,
-    pending: todoTasks.length + onGoingTasks.length,
-    completed: doneTasks.length,
-  };
+  const [taskCount, setTaskCount] = useState({
+    count:{
+      total: userData.length,
+      pending: todoTasks.length + onGoingTasks.length,
+      completed: doneTasks.length,
+    }
+  });
 
   const taskHandler = (newTask) => {
     const result = data.filter((task) => task.title.includes(newTask.title));
     if (result.length > 0) {
-        setError("Entered task title already exist !");
+      setError("Entered task title already exist !");
       return;
     }
     setData((prevTask) => [...prevTask, newTask]);
-  };
+    setTaskCount((prevTaskCount) => ({
+        ...prevTaskCount,
+        count: {
+          ...prevTaskCount.count,
+          total: prevTaskCount.count.total + 1,
+          pending: prevTaskCount.count.pending + 1,
+        }
+      }))};
 
   const clearErrorHandler = () => {
-    setError("");
+    setError(false);
   };
 
   const deleteTaskHandler = (taskTitle) => {
@@ -115,7 +126,7 @@ const ListComponent = (props) => {
     updatedTasks.splice(index, 1, taskToMove);
     setData(updatedTasks);
   };
-  console.log(data);
+  console.log(taskCount);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <h2>Teams Board</h2>
@@ -171,7 +182,7 @@ const ListComponent = (props) => {
               })}
             </CardContent>
             <TaskModelComponent
-              stage="0"
+              stage={0}
               onaddTask={(newTask) => taskHandler(newTask)}
               error={error}
               clearError={clearErrorHandler}
@@ -228,7 +239,7 @@ const ListComponent = (props) => {
             </CardContent>
 
             <TaskModelComponent
-              stage="1"
+              stage={1}
               onaddTask={(newTask) => taskHandler(newTask)}
               error={error}
               clearError={clearErrorHandler}
@@ -284,7 +295,7 @@ const ListComponent = (props) => {
               })}
             </CardContent>
             <TaskModelComponent
-              stage="2"
+              stage={2}
               onaddTask={(newTask) => taskHandler(newTask)}
               error={error}
               clearError={clearErrorHandler}
@@ -336,7 +347,7 @@ const ListComponent = (props) => {
               })}
             </CardContent>
             <TaskModelComponent
-              stage="3"
+              stage={3}
               onaddTask={(newTask) => taskHandler(newTask)}
               error={error}
               clearError={clearErrorHandler}

@@ -3,21 +3,21 @@ import { Container, Grid } from "@mui/material";
 import DashboardCard from "../UI/DashboardCard";
 import { TaskContext } from "../context/task-context";
 
-
 const DashboardComponent = (props) => {
 
   const taskCtx = useContext(TaskContext);
+
   const cardsData = [
     {
       count: taskCtx.count.total,
       description: "Total Tasks",
     },
     {
-      count: taskCtx.count.pending,
+      count: taskCtx.count.completed,
       description: "Task Completed",
     },
     {
-      count: taskCtx.count.completed,
+      count: taskCtx.count.pending,
       description: "Task Pending",
     },
   ];
