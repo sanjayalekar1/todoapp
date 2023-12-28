@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -102,6 +102,10 @@ const LoginForm = (props) => {
       fetchLoginData();
     }
   };
+
+  useEffect(()=>{
+      isAuthenticated && navigate('/dashboard');
+  },[])
  
   return (
     <Container maxWidth="xs" className="container">
